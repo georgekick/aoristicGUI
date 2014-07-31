@@ -13,7 +13,6 @@ if(length(new.packages2)){
 
   suppressMessages(suppressWarnings(install.packages(new.packages2)))
   suppressMessages(suppressWarnings(library(RGtk2, quietly=TRUE))) 
-  suppressMessages(suppressWarnings(library(RCurl, quietly=TRUE))) 
     
   cat("#############################\n")
   cat("# R needs to be restarted...\n")
@@ -38,24 +37,25 @@ if(length(new.packages2)){
   # refresh
 }
 
-if(!exists("frame_files")){
+# if(!exists("frame_files")){
  frame_files <- lapply(sys.frames(), function(x) x$ofile)
  frame_files <- Filter(Negate(is.null), frame_files)
  folder.location <- dirname(frame_files[[length(frame_files)]]) 
  setwd(folder.location)
-}
+# }
 
 # github added
 
 source_github <- function(u) {
   # load package
-  require(RCurl)
+  suppressMessages(suppressWarnings(library(RCurl, quietly=TRUE))) 
   
   # read script lines from website and evaluate
   script <- getURL(u, ssl.verifypeer = FALSE)
-  eval(parse(text = script))
+  eval(parse(text = script), envir=.GlobalEnv)
 }  
 
+# source_url("https://raw.githubusercontent.com/georgekick/aoristicGUI/master/RsubCodes/a1_LoadLibraries.R", chdir=TRUE)
 source_github("https://raw.githubusercontent.com/georgekick/aoristicGUI/master/RsubCodes/a1_LoadLibraries.R")
 
 # source("RsubCodes/a1_LoadLibraries.r", chdir=T) 
