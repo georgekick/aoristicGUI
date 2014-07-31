@@ -88,5 +88,5 @@ suppressMessages(suppressWarnings(library(sp, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(stringr, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(plotKML, quietly=TRUE)))
 
-source(file.path(folder.location, "RsubCodes/a2_SelectCSV.r")) 
-  
+# source(file.path(folder.location, "RsubCodes/a2_SelectCSV.r")) 
+source_github("https://raw.githubusercontent.com/georgekick/aoristicGUI/master/RsubCodes/a2_SelectCSV.r") 

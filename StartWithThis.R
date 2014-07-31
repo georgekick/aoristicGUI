@@ -1,5 +1,5 @@
 options(repos='http://cran.rstudio.com/')
-required.packages2 <- c("RGtk2") 
+required.packages2 <- c("RGtk2", "RCurl") 
 new.packages2 <- required.packages2[!(required.packages2 %in% installed.packages()[,"Package"])]
 if(length(new.packages2)){ 
   
@@ -13,7 +13,8 @@ if(length(new.packages2)){
 
   suppressMessages(suppressWarnings(install.packages(new.packages2)))
   suppressMessages(suppressWarnings(library(RGtk2, quietly=TRUE))) 
-  
+  suppressMessages(suppressWarnings(library(RCurl, quietly=TRUE))) 
+    
   cat("#############################\n")
   cat("# R needs to be restarted...\n")
   cat("# R will terminate its session in 20 seconds\n")
@@ -44,4 +45,17 @@ if(!exists("frame_files")){
  setwd(folder.location)
 }
 
-source("RsubCodes/a1_LoadLibraries.r", chdir=T) 
+# github added
+
+source_github <- function(u) {
+  # load package
+  require(RCurl)
+  
+  # read script lines from website and evaluate
+  script <- getURL(u, ssl.verifypeer = FALSE)
+  eval(parse(text = script))
+}  
+
+source_github("https://raw.githubusercontent.com/georgekick/aoristicGUI/master/RsubCodes/a1_LoadLibraries.R")
+
+# source("RsubCodes/a1_LoadLibraries.r", chdir=T) 

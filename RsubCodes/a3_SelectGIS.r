@@ -21,7 +21,8 @@ addSpring(g)
 
 next.button <- gbutton("Analyze! (click only once)", cont=g)
 addHandlerChanged(next.button, handler=function(h,...){
-  source(file.path(folder.location, "RsubCodes/a4_AoristicAnalysis.r")) 
+  # source(file.path(folder.location, "RsubCodes/a4_AoristicAnalysis.r")) 
+  source_github("https://raw.githubusercontent.com/georgekick/aoristicGUI/master/RsubCodes/a4_AoristicAnalysis.R")
   dispose(h$obj)
 })
 # visible(w) <- TRUE
