@@ -130,7 +130,7 @@ if (!svalue(shp.file)==""){
 	if (!check_projection(area.shp)){
 		area.shp <- reproject(area.shp, proj.WGS84@projargs)
 	}
-	area.shp <- reproject(area.shp, proj.WGS84@projargsshow.output.on.console=FALSE) # project again even in order to use the "identical" projection 
+	area.shp <- reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE) # project again even in order to use the "identical" projection 
 	
   ########
 	
