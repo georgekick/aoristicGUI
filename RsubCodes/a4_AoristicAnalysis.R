@@ -26,8 +26,8 @@ data <- data[!is.na(data$lat),]
 #data$FromDateTime <- mdy_hm(as.character(data$FromDateTime), quiet=TRUE)
 #data$ToDateTime <- mdy_hm(as.character(data$ToDateTime), quiet=TRUE)
 dtFormat <- c("ymd R*", "mdy R*") # see date_time_parse help for additional formatting
-data$FromDateTime <- date_time_parse(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE)
-data$ToDateTime   <- date_time_parse(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE)
+data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE)
+data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE)
 
 
 # create duration variables
