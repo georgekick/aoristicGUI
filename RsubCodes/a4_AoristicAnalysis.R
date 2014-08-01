@@ -495,7 +495,7 @@ Sys.sleep(15)
 if (file.exists(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))){
 	browseURL(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))
 }
-Sys.sleep(5)
+Sys.sleep(1)
 browseURL(file.path(folder.location, "output"))
 
 # gmessage("Done! Please use Google Earth to conduct your Aoristic Analysis", title="message", icon = "info") 
