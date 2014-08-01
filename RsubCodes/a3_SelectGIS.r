@@ -18,7 +18,7 @@ shp.file <- gfilebrowse (text = "", type = "open", quote = FALSE,
                          )
 )
 
-glabel("Search in:", cont = g, anchor = c(-1,0))
+glabel("Create analysis outputs in...:", cont = g, anchor = c(-1,0))
 out_dir <- gfilebrowse(text = "Select a directory ...",
                          quote = FALSE,
                          type = "selectdir", cont = g)
