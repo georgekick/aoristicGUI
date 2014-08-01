@@ -5,7 +5,8 @@ cat("#############################################\n")
 cat("# Creating an Aoristic Graph for the Entire Study Area...\n")
 cat("#############################################\n")
 
-folder.location <- dirname(svalue(browse.file))
+# folder.location <- dirname(svalue(browse.file))
+folder.location <- dirname(svalue(out_dir))
 
 setwd(folder.location)
 
