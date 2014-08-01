@@ -18,10 +18,10 @@ shp.file <- gfilebrowse (text = "", type = "open", quote = FALSE,
                          )
 )
 
-glabel("Search in:", cont = group, anchor = c(-1,0))
+glabel("Search in:", cont = g, anchor = c(-1,0))
 out_dir <- gfilebrowse(text = "Select a directory ...",
                          quote = FALSE,
-                         type = "selectdir", cont = group)
+                         type = "selectdir", cont = g)
 addSpring(g)
 
 next.button <- gbutton("Analyze! (click only once)", cont=g)
