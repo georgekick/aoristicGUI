@@ -97,6 +97,7 @@ ggsave("allAreasAoristicGraph.png", width = 6, height = 4)
 proj.WGS84 <- CRS("+proj=longlat +datum=WGS84")
 data.spdf <- SpatialPointsDataFrame(data=data2, coords=matrix(c(data$lon, data$lat), ncol=2), 
                                     proj4string=proj.WGS84)
+data.spdf <- reproject(data.spdf, proj.WGS84@projargs, show.output.on.console=FALSE)
 
 # check if the GIS boundary file was selected									
 if (!svalue(shp.file)==""){
@@ -126,7 +127,7 @@ if (!svalue(shp.file)==""){
 	## changed 2014/07/29
 	# area.shp@proj4string <- proj.WGS84
 	if (!check_projection(area.shp)){
-		area.shp <- reproject(area.shp, proj.WGS84)
+		area.shp <- reproject(area.shp, proj.WGS84@projargs)
 	}
   	########
 	
