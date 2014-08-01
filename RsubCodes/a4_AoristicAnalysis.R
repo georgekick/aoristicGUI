@@ -98,7 +98,7 @@ ggsave("allAreasAoristicGraph.png", width = 6, height = 4)
 proj.WGS84 <- CRS("+proj=longlat +datum=WGS84")
 data.spdf <- SpatialPointsDataFrame(data=data2, coords=matrix(c(data$lon, data$lat), ncol=2), 
                                     proj4string=proj.WGS84)
-data.spdf <- reproject(data.spdf, proj.WGS84@projargs, show.output.on.console=FALSE)
+data.spdf <- suppressMessages(reproject(data.spdf, proj.WGS84@projargs, show.output.on.console=FALSE))
 
 # check if the GIS boundary file was selected									
 if (!svalue(shp.file)==""){
@@ -130,8 +130,8 @@ if (!svalue(shp.file)==""){
 	if (!check_projection(area.shp)){
 		area.shp <- reproject(area.shp, proj.WGS84@projargs)
 	}
-	area.shp <- reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE) # project again even in order to use the "identical" projection 
-	
+	# project again even in order to use the "identical" projection 
+	area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
   ########
 	
 	area.shp@data$sortID <- seq(1, nrow(area.shp@data), 1)
