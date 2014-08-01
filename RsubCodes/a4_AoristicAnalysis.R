@@ -126,7 +126,7 @@ if (!svalue(shp.file)==""){
 	## changed 2014/07/29
 	# area.shp@proj4string <- proj.WGS84
 	if (!check_projection(area.shp)){
-		area.shp <- reproject(area.shp)
+		area.shp <- reproject(area.shp, proj.WGS84)
 	}
   	########
 	
