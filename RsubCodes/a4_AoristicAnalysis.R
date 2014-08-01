@@ -129,7 +129,9 @@ if (!svalue(shp.file)==""){
 	if (!check_projection(area.shp)){
 		area.shp <- reproject(area.shp, proj.WGS84@projargs)
 	}
-  	########
+	area.shp <- reproject(area.shp, proj.WGS84@projargsshow.output.on.console=FALSE) # project again even in order to use the "identical" projection 
+	
+  ########
 	
 	area.shp@data$sortID <- seq(1, nrow(area.shp@data), 1)
 	area.shp <- area.shp[order(area.shp@data$sortID),]
