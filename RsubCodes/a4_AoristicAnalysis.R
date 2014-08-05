@@ -26,7 +26,7 @@ data <- data[!is.na(data$lat),]
 # format date fields------------
 #data$FromDateTime <- mdy_hm(as.character(data$FromDateTime), quiet=TRUE)
 #data$ToDateTime <- mdy_hm(as.character(data$ToDateTime), quiet=TRUE)
-dtFormat <- c("ymd R*", "mdy R*") # see date_time_parse help for additional formatting
+dtFormat <- c("mdy R*", "ymd R*") # see date_time_parse help for additional formatting
 data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE)
 data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE)
 
@@ -219,6 +219,10 @@ if (!svalue(shp.file)==""){
 	
 }
 
+# opening a KML file
+if (file.exists(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))){
+  browseURL(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))
+}
 
 #########################################3
 # Grid count method -------------
@@ -351,8 +355,17 @@ cat(unlist(out["content",]), file=kmlFile, sep="\n")
 cat(kmlPolygon()$footer, file=kmlFile, sep="\n")
 close(kmlFile)
 
+# opening a KML file
+browseURL(file.path(folder.location, "output", "Grid", "Aoristic_Grid.kml"))
+
+
 #########################################
 # kerneldensity, contour ----------------
+
+cat("#############################################\n")
+cat("# Creating Aoristic Graphs with Kernel Density\n")
+cat("#############################################\n")
+
 
 dir.create(file.path(folder.location, "output", "Density and Contour"), showWarnings = FALSE)
 setwd(file.path(folder.location, "output", "Density and Contour"))
@@ -366,18 +379,36 @@ kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128)
 # c <- contourLines(kde$x, kde$y, kde$z)
 c <- contourLines(kde, levels=c(quantile(kde$z, 0.99)))
 # convert a list to SpatialPolygons
+unclosed <- list()
 for (i in 1:length(c)){
   xy <- cbind(c[[i]]$x, c[[i]]$y)
-  p <- Polygon(xy)
-  ps <- Polygons(list(p), i)
-  sps.temp <- SpatialPolygons(list(ps))
+  
+  # checking if contour polygon closes. the error is likely to occur with a small sample size.
+  unclosed[[i]] <- tryCatch(
+    p <- Polygon(xy),
+    error=function(e) e
+  )
+  
+  if(!inherits(unclosed[[i]], "error")){
+  
+    ps <- Polygons(list(p), i)
+    sps.temp <- SpatialPolygons(list(ps))
     
-  if (i==1){
-    c.sps <- sps.temp
-  } else {
-    c.sps <- rbind(c.sps, sps.temp) 
+    if (!exists("c.sps")){
+      c.sps <- sps.temp
+    } else {
+    # if (i==1){
+    #  c.sps <- sps.temp
+    #} else {
+      c.sps <- rbind(c.sps, sps.temp) 
+    }
   }
 }
+# issue a warning message if any contour polygon is unclosed (possibly due to a small incident count)
+if (grep("error", paste0(unclosed, collapse=""))){
+  cat("# Kernel Density and Contour may have problems, most likely to due a small number of incidents in the data\n")
+}
+
 proj4string(c.sps) <- proj.WGS84
 id <- data.frame(id=seq(1:length(c.sps)))
 c.sps <- SpatialPolygonsDataFrame(c.sps, data=id)
@@ -477,6 +508,13 @@ image(as.image.SpatialGridDataFrame(sp.grd[1]), col=Lab.palette(10),
 kmlOverlay(sp.grd.kml, paste(tf, ".kml", sep=""), paste(tf, ".png", sep=""))
 dev.off()
 
+# opening KML files
+browseURL(file.path(folder.location, "output", "Density and Contour", "Density.kml"))
+Sys.sleep(15)
+browseURL(file.path(folder.location, "output", "Density and Contour", "Aoristic_Contour.kml"))
+Sys.sleep(10)
+
+
 cat("#############################################\n")
 cat("# Done!\n")
 cat("# Please use Google Earth to conduct your Aoristic Analysis\n")
@@ -486,16 +524,6 @@ alarm()
 
 # cat(paste("Your output files are located in ", file.path(folder.location, "output"), "\n", 
 #	"Within each sub-folder, double-click ***.kml files to start Google Earth", sep=""))
-browseURL(file.path(folder.location, "output", "Grid", "Aoristic_Grid.kml"))
-Sys.sleep(15)
-browseURL(file.path(folder.location, "output", "Density and Contour", "Density.kml"))
-Sys.sleep(15)
-browseURL(file.path(folder.location, "output", "Density and Contour", "Aoristic_Contour.kml"))
-Sys.sleep(15)
-if (file.exists(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))){
-	browseURL(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))
-}
-Sys.sleep(1)
 browseURL(file.path(folder.location, "output"))
 
 # gmessage("Done! Please use Google Earth to conduct your Aoristic Analysis", title="message", icon = "info") 
