@@ -405,7 +405,7 @@ for (i in 1:length(c)){
   }
 }
 # issue a warning message if any contour polygon is unclosed (possibly due to a small incident count)
-if (grep("error", paste0(unclosed, collapse=""))){
+if (grepl("ring not closed", paste0(unclosed, collapse=""))){
   cat("# Kernel Density and Contour may have problems, most likely to due a small number of incidents in the data\n")
 }
 
