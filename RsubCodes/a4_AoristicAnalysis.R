@@ -407,11 +407,12 @@ for (i in 1:length(c)){
 # issue a warning message if any contour polygon is unclosed (possibly due to a small incident count)
 if (grepl("ring not closed", paste0(unclosed, collapse=""))){
   cat("# Kernel Density and Contour may have problems, most likely to due a small number of incidents in the data\n")
+} else {
+  # id <- data.frame(id=seq(1:length(c.sps)))
 }
 
 proj4string(c.sps) <- proj.WGS84
-id <- data.frame(id=seq(1:length(c.sps)))
-c.sps <- SpatialPolygonsDataFrame(c.sps, data=id)
+c.sps <- SpatialPolygonsDataFrame(c.sps, data=data.frame(id=getSpPPolygonsIDSlots(c.sps))
 
 # create SPDF for kernel contour count ------    	
 area.shp <- c.sps
