@@ -29,14 +29,14 @@ data <- data[!is.na(data$lat),]
 dtFormat <- c("mdy R*", "ymd R*") # see date_time_parse help for additional formatting
 tryCatch(
   data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=FALSE),
-  error=function(e) e, {
+  error=function(e2) e2, {
     cat("FROM DateTime column is wrongly specified\n")
     stop()
   }
 )
 tryCatch(
   data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=FALSE),
-  error=function(e) e, {
+  error=function(e3) e3, {
     cat("TO DateTime column is wrongly specified\n")
     stop()
   }
