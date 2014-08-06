@@ -56,7 +56,7 @@ grp.load.data <- gbutton(text="Load data", container = DataGroup,
         ind <- which(selected == all_selected)      
         if(length(ind) > 1) {
           j <- setdiff(ind, i)
-          remaining <- suppressMessages(suppressWarnings(setdiff(fac_levels, all_selected)))
+          remaining <- try(setdiff(fac_levels, all_selected), silent=TRUE)
           tmp <- Insert.columns[[j]]
           svalue(tmp) <- remaining[1]
         }
