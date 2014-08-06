@@ -138,7 +138,8 @@ if (!svalue(shp.file)==""){
 	area.shp <- area.shp[order(area.shp@data$sortID),]
 
 	# aggregate aoristic count per GIS boundary through for-loop----------
-	for (i in 4:27){
+	data.spdf@data$Total <- 1 # dummy count (2014/08/05)
+	for (i in 4:28){
 		agg <- aggregate(data.spdf[i], area.shp, FUN=sum)
 		agg@data[is.na(agg@data)] <- 0
 		area.shp <- spCbind(area.shp, agg@data)
@@ -187,11 +188,11 @@ if (!svalue(shp.file)==""){
 	
 	plotclr <- brewer.pal(nclr,"YlOrRd")
 
-	area.shp@data$Total <- rowSums(area.shp@data[,c("time0", "time1", "time2", "time3", "time4", 
-                                                "time5", "time6", "time7", "time8", "time9", 
-                                                "time10", "time11", "time12", "time13", "time14",
-                                                "time15", "time16", "time17", "time18", "time19",
-                                                "time20", "time21", "time22", "time23")])
+	# area.shp@data$Total <- rowSums(area.shp@data[,c("time0", "time1", "time2", "time3", "time4", 
+  #                                              "time5", "time6", "time7", "time8", "time9", 
+  #                                              "time10", "time11", "time12", "time13", "time14",
+  #                                              "time15", "time16", "time17", "time18", "time19",
+  #                                              "time20", "time21", "time22", "time23")])
 	plotvar <- area.shp@data$Total
 
 	class <- classIntervals(plotvar, nclr, style="jenks") 
@@ -288,7 +289,8 @@ names(area.shp@data) <- "sortID"
 
 # aggregate aoristic count through for-loop (Quadrat)----------
 
-for (i in 4:27){
+data.spdf@data$Total <- 1 # dummy count (2014/08/05)
+for (i in 4:28){
   agg <- aggregate(data.spdf[i], area.shp, FUN=sum)
   agg@data[is.na(agg@data)] <- 0
   area.shp <- spCbind(area.shp, agg@data)
@@ -327,11 +329,11 @@ nclr <- 9 # the number of classification categories
 
 plotclr <- brewer.pal(nclr,"YlOrRd")
 
-area.shp@data$Total <- rowSums(area.shp@data[,c("time0", "time1", "time2", "time3", "time4", 
-                                                "time5", "time6", "time7", "time8", "time9", 
-                                                "time10", "time11", "time12", "time13", "time14",
-                                                "time15", "time16", "time17", "time18", "time19",
-                                                "time20", "time21", "time22", "time23")])
+# area.shp@data$Total <- rowSums(area.shp@data[,c("time0", "time1", "time2", "time3", "time4", 
+#                                                "time5", "time6", "time7", "time8", "time9", 
+#                                                "time10", "time11", "time12", "time13", "time14",
+#                                                "time15", "time16", "time17", "time18", "time19",
+#                                                "time20", "time21", "time22", "time23")])
 plotvar <- area.shp@data$Total
 class <- classIntervals(plotvar, nclr, style="jenks") 
 colcode <- findColours(class, plotclr, digits=4)
@@ -393,27 +395,15 @@ for (i in 1:length(c)){
     }
   )
   
-  # if(!inherits(unclosed[[i]], "error")){
-  
     ps <- Polygons(list(p), i)
     sps.temp <- SpatialPolygons(list(ps))
     
     if (!exists("c.sps")){
       c.sps <- sps.temp
     } else {
-    # if (i==1){
-    #  c.sps <- sps.temp
-    #} else {
       c.sps <- rbind(c.sps, sps.temp) 
     }
-  #}
-}
-# issue a warning message if any contour polygon is unclosed (possibly due to a small incident count)
-if (grepl("ring not closed", paste0(unclosed, collapse=""))){
-  cat("# Kernel Density and Contour files may have problems, \n")
-  cat("# possibly due to a small number of incidents in the data or the presence of hot spots near the boundary of the study area\n")
-} else {
-  # id <- data.frame(id=seq(1:length(c.sps)))
+
 }
 
 id <- suppressWarnings(data.frame(id=getSpPPolygonsIDSlots(c.sps)))
@@ -426,13 +416,13 @@ c.sps <- SpatialPolygonsDataFrame(c.sps, data=id)
 area.shp <- c.sps
 area.shp@proj4string <- proj.WGS84
 area.shp <- as(area.shp, "SpatialPolygonsDataFrame")
-area.shp@data$dummy <- seq(1, length(area.shp), 1)
+# area.shp@data$dummy <- seq(1, length(area.shp), 1)
 names(area.shp@data) <- "sortID"
 area.shp@data$sortID <- seq(1, length(area.shp), 1)
 
 # aggregate aoristic count through for-loop (Kernel Contour)----------
-
-for (i in 4:27){
+data.spdf@data$Total <- 1 # dummy count (2014/08/05)
+for (i in 4:28){
   agg <- aggregate(data.spdf[i], area.shp, FUN=sum)
   agg@data[is.na(agg@data)] <- 0
   area.shp <- spCbind(area.shp, agg@data)
@@ -467,11 +457,12 @@ for (i in 1:nrow(area.shp@data)){
 
 ## create KML (Kernel Contour) --------
 
-area.shp@data$Total <- rowSums(area.shp@data[,c("time0", "time1", "time2", "time3", "time4", 
-                                                "time5", "time6", "time7", "time8", "time9", 
-                                                "time10", "time11", "time12", "time13", "time14",
-                                                "time15", "time16", "time17", "time18", "time19",
-                                                "time20", "time21", "time22", "time23")])
+# removed because of the dummy count above
+# area.shp@data$Total <- rowSums(area.shp@data[,c("time0", "time1", "time2", "time3", "time4", 
+#                                                "time5", "time6", "time7", "time8", "time9", 
+#                                                "time10", "time11", "time12", "time13", "time14",
+#                                                "time15", "time16", "time17", "time18", "time19",
+#                                                "time20", "time21", "time22", "time23")])
 	 
 out <- sapply(slot(area.shp, "polygons"), function(x) {kmlPolygon(x,
                     name=paste("Crime Count: ", round(as(area.shp, "data.frame")[slot(x, "ID"), "Total"]), sep=""), 
@@ -603,5 +594,5 @@ browseURL(file.path(folder.location, "output"))
 
 cat("Quitting R\n")
 Sys.sleep(5)
-# quit(save = "no", status = 0, runLast = TRUE)
+quit(save = "no", status = 0, runLast = TRUE)
 		
