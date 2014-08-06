@@ -27,20 +27,8 @@ data <- data[!is.na(data$lat),]
 #data$FromDateTime <- mdy_hm(as.character(data$FromDateTime), quiet=TRUE)
 #data$ToDateTime <- mdy_hm(as.character(data$ToDateTime), quiet=TRUE)
 dtFormat <- c("mdy R*", "ymd R*") # see date_time_parse help for additional formatting
-tryCatch(
-  data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE),
-  error2=function(e2) e2, {
-    cat("FROM DateTime column is wrongly specified\n")
-    stop()
-  }
-)
-tryCatch(
-  data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE),
-  error3=function(e3) e3, {
-    cat("TO DateTime column is wrongly specified\n")
-    stop()
-  }
-)
+data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE)
+data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE)
 
 # check lat/lon values
 if (!class(data$lon)=="numeric") {stop ("Longitude column is not numeric")}
@@ -48,7 +36,6 @@ if (!class(data$lat)=="numeric") {stop ("Latitude column is not numeric")}
 
 if (min(data$lon) < -180 | max(data$lon) > 180) {stop ("Longitude values have invalid values (i.e., outside of (-180, 180) range")}
 if (min(data$lat) < -90  | max(data$lat) > 90) {stop ("Latitude values have invalid values (i.e., outside of (-90, 90) range")}
-
 
 # create duration variables
 duration <- as.numeric(difftime(data$ToDateTime, data$FromDateTime, units="hours") + 1 )
