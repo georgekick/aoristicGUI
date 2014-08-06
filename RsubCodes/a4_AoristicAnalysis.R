@@ -27,12 +27,22 @@ data <- data[!is.na(data$lat),]
 #data$FromDateTime <- mdy_hm(as.character(data$FromDateTime), quiet=TRUE)
 #data$ToDateTime <- mdy_hm(as.character(data$ToDateTime), quiet=TRUE)
 dtFormat <- c("mdy R*", "ymd R*") # see date_time_parse help for additional formatting
-data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=FALSE)
-data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=FALSE)
+tryCatch(
+  data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=FALSE),
+  error=function(e) e, {
+    cat("FROM DateTime column is wrongly specified\n")
+    stop()
+  }
+)
+tryCatch(
+  data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=FALSE),
+  error=function(e) e, {
+    cat("TO DateTime column is wrongly specified\n")
+    stop()
+  }
+)
 
-# check input values
-if (!class(data$FromDateTime)[1]=="POSIXct") {stop ("FROM DateTime column is wrongly specified")}
-if (!class(data$ToDateTime)[1]=="POSIXct") {stop ("TO DateTime column is wrongly specified")}
+# check lat/lon values
 if (!class(data$lon)=="numeric") {stop ("Longitude column is not numeric")}
 if (!class(data$lat)=="numeric") {stop ("Latitude column is not numeric")}
 
