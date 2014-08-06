@@ -555,17 +555,23 @@ close(kmlFile)
 
 # kernel density -> KML ------------------
 
-#if (gis.true =="TRUE"){
-#  area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
-#  if (!check_projection(area.shp)){
-#    area.shp <- reproject(area.shp, proj.WGS84@projargs)
-#  }
-#  area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
+if (gis.true =="TRUE"){
   
-#  sp.pix <- kde.points(data.spdf, h=0.01, n=128, area.shp)
-#} else {
+  area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
+  if (!check_projection(area.shp)){
+    area.shp <- reproject(area.shp, proj.WGS84@projargs)
+  }
+  area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
+
+  data.spdf@bbox["coords.x1", "min"] <- min(data.spdf@bbox["coords.x1", "min"], area.shp@bbox["x", "min"])
+  data.spdf@bbox["coords.x1", "max"] <- max(data.spdf@bbox["coords.x1", "max"], area.shp@bbox["x", "max"])
+  data.spdf@bbox["coords.x2", "min"] <- min(data.spdf@bbox["coords.x2", "min"], area.shp@bbox["y", "min"])
+  data.spdf@bbox["coords.x2", "max"] <- max(data.spdf@bbox["coords.x2", "max"], area.shp@bbox["y", "max"])
+    
   sp.pix <- kde.points(data.spdf, h=0.01, n=128)
-#}
+} else {
+  sp.pix <- kde.points(data.spdf, h=0.01, n=128)
+}
 
 sp.grd <- as(sp.pix, "SpatialGridDataFrame")
 sp.grd@data$kde[sp.grd@data$kde < quantile(sp.grd@data$kde, 0.5)] <- NA
