@@ -517,7 +517,17 @@ close(kmlFile)
 
 # kernel density -> KML ------------------
 
-sp.pix <- kde.points(data.spdf, h=0.01, n=128)
+if (gis.true =="TRUE"){
+  area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
+  if (!check_projection(area.shp)){
+    area.shp <- reproject(area.shp, proj.WGS84@projargs)
+  }
+  area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
+  
+  sp.pix <- kde.points(data.spdf, h=0.01, n=128, area.shp)
+} else {
+  sp.pix <- kde.points(data.spdf, h=0.01, n=128)
+}
 
 sp.grd <- as(sp.pix, "SpatialGridDataFrame")
 sp.grd@data$kde[sp.grd@data$kde < quantile(sp.grd@data$kde, 0.5)] <- NA
