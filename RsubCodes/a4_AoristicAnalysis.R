@@ -468,7 +468,7 @@ area.shp@data$Total <- rowSums(area.shp@data[,c("time0", "time1", "time2", "time
                                                 "time20", "time21", "time22", "time23")])
 	 
 out <- sapply(slot(area.shp, "polygons"), function(x) {kmlPolygon(x,
-                    name=paste("Crime Count: ", round(as(area.shp, "data.frame")[slot(x, "ID"), "Total"]), sep=""), 
+                    name=paste("Crime Count: ", floor(as(area.shp, "data.frame")[slot(x, "ID"), "Total"]), sep=""), 
 					lwd=3, border='black', 
                     description=paste("<img src=", 
                     as(area.shp, "data.frame")[slot(x, "ID"), "img"], " width=\"450\">", sep=""))})
@@ -519,54 +519,53 @@ browseURL(file.path(folder.location, "output", "Density and Contour", "Aoristic_
 Sys.sleep(10)
 
 
-# Point KML file -----
+# Creating Point KML file -----
+cat("#############################################\n")
+cat("# Creating Point KML file\n")
+cat("#############################################\n")
 
-  type.l <- 1
-  data.spdf@data$style <- rep(1, nrow(data.spdf))
+  data <- read.table(svalue(browse.file), header=TRUE, sep=",")
+  # remove missing data
+  data <- data[!is.na(data[svalue(Longitude)]),]
+  data <- data[!is.na(data[svalue(Latitude)]),]
 
-  col.temp <- c("blue", "grn", "ltblu", "pink", "purple", "red", "wht", "ylw")
+  data.spdf <- SpatialPointsDataFrame(data=data, 
+                                    coords=matrix(c(as.matrix(data[svalue(Longitude)]), as.matrix(data[svalue(Latitude)])), ncol=2), 
+                                    proj4string=proj.WGS84)
  
   icon.url <- "https://dl.dropboxusercontent.com/u/121989515/kml/markers/icon57.png"
   
   kml.folder <- file.path(folder.location, "output")
-  filename <- file(paste(kml.folder, "/", "Points.kml", , sep=""), "w",  blocking=FALSE)
+  filename <- file(paste(kml.folder, "/", "Points.kml", sep=""), "w",  blocking=FALSE)
   
   write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", filename)
   write("<kml xmlns=\"http://earth.google.com/kml/2.2\">", filename, append = TRUE)
   write("<Document>", filename, append = TRUE)
-  write(paste("<name>", kml.name, "</name>", sep=" "), filename, append = TRUE)
+  write("<name>Points</name>", filename, append = TRUE)
   write("<open>0</open>", filename, append = TRUE)
   
-  for (i in 1:type.l){ 
-    write(paste("<Style id=\"style", i, "\">", sep=""), filename, append = TRUE)
-    write("<IconStyle>", filename, append = TRUE)
-    write(paste("<Icon><href>", icon.url[i], "</href></Icon>", sep=""), filename, append = TRUE)
-    write("</IconStyle>", filename, append = TRUE)
-    write("</Style>", filename, append = TRUE)
-  }
-  
+  write("<Style id=\"style1\">",filename, append = TRUE)
+  write("<IconStyle>", filename, append = TRUE)
+  write(paste("<Icon><href>", icon.url, "</href></Icon>", sep=""), filename, append = TRUE)
+  write("</IconStyle>", filename, append = TRUE)
+  write("</Style>", filename, append = TRUE)
+   
   for (i in 1:nrow(data.spdf)) {
     write("<Placemark>", filename, append = TRUE)
     
-    if (!missing(name.col)){
-      stopifnot(length(data[, pars$name.col])>0)
-      write(paste("<name>", data[i, pars$name.col], "</name>", sep=""), filename, append = TRUE)
-    } 
-    if (missing(name.col) & (name.seq==TRUE)){
-      write(paste("<name>", i, "</name>", sep=""), filename, append = TRUE)
-    }
+    # write(paste("<name>", i, "</name>", sep=""), filename, append = TRUE)
+    write("<name></name>", filename, append = TRUE)
     
-    write(paste("<styleUrl>#style", data.spdf@data$style[i], "</styleUrl>", sep=""), filename, append=TRUE)
+    write("<styleUrl>#style1</styleUrl>", filename, append=TRUE)
     
-    write("<description>\n", filename, append = TRUE)
-    write(print(xtable(t(data.spdf@data[i,])), 
-                type="html", 
-                include.colnames=FALSE,
-                html.table.attributes = "border=\"1\"")
-          , filename, append=TRUE)
-    
-    write("</description>", filename, append = TRUE)          
-    
+    # write("<description>\n", filename, append = TRUE)
+    # write(print(xtable(t(data.spdf@data[i,])), 
+    #            type="html", 
+    #            include.colnames=FALSE,
+    #            html.table.attributes = "border=\"1\"")
+    #      , filename, append=TRUE)
+    # write("</description>", filename, append = TRUE)          
+        
     write("<Point>", filename, append = TRUE)
     write("<coordinates>", filename, append = TRUE)
     write(paste(coordinates(data.spdf)[i,1], coordinates(data.spdf)[i,2], sep=","), filename, append = TRUE)
