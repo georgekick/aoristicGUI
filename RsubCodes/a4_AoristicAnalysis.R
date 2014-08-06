@@ -386,10 +386,14 @@ for (i in 1:length(c)){
   # checking if contour polygon closes. the error is likely to occur with a small sample size.
   unclosed[[i]] <- tryCatch(
     p <- Polygon(xy),
-    error=function(e) e
+    error=function(e) e, {
+      xy[nrow(xy), 1] <- xy[1, 1]
+      xy[nrow(xy), 2] <- xy[1, 2]
+      p <- Polygon(xy)
+    }
   )
   
-  if(!inherits(unclosed[[i]], "error")){
+  # if(!inherits(unclosed[[i]], "error")){
   
     ps <- Polygons(list(p), i)
     sps.temp <- SpatialPolygons(list(ps))
@@ -402,11 +406,12 @@ for (i in 1:length(c)){
     #} else {
       c.sps <- rbind(c.sps, sps.temp) 
     }
-  }
+  #}
 }
 # issue a warning message if any contour polygon is unclosed (possibly due to a small incident count)
 if (grepl("ring not closed", paste0(unclosed, collapse=""))){
-  cat("# Kernel Density and Contour may have problems, most likely to due a small number of incidents in the data\n")
+  cat("# Kernel Density and Contour files may have problems, \n")
+  cat("# possibly due to a small number of incidents in the data or the presence of hot spots near the boundary of the study area\n")
 } else {
   # id <- data.frame(id=seq(1:length(c.sps)))
 }
