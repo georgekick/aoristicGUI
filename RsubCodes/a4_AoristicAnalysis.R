@@ -411,8 +411,11 @@ if (grepl("ring not closed", paste0(unclosed, collapse=""))){
   # id <- data.frame(id=seq(1:length(c.sps)))
 }
 
+id <- suppressWarnings(data.frame(id=getSpPPolygonsIDSlots(c.sps)))
+row.names(id)<- id$id
+  
 proj4string(c.sps) <- proj.WGS84
-c.sps <- SpatialPolygonsDataFrame(c.sps, data=data.frame(id=getSpPPolygonsIDSlots(c.sps))
+c.sps <- SpatialPolygonsDataFrame(c.sps, data=id)
 
 # create SPDF for kernel contour count ------    	
 area.shp <- c.sps
