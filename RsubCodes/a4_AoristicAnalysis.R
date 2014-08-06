@@ -511,9 +511,8 @@ dev.off()
 
 # opening KML files
 browseURL(file.path(folder.location, "output", "Density and Contour", "Density.kml"))
-Sys.sleep(15)
+Sys.sleep(2)
 browseURL(file.path(folder.location, "output", "Density and Contour", "Aoristic_Contour.kml"))
-Sys.sleep(10)
 
 
 # Creating Point KML file -----
