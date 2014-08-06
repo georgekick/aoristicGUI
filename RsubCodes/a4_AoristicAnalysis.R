@@ -418,9 +418,6 @@ cat("#############################################\n")
 dir.create(file.path(folder.location, "output", "Density and Contour"), showWarnings = FALSE)
 setwd(file.path(folder.location, "output", "Density and Contour"))
 
-# create point data
-data.ppp <- as(data.spdf, "ppp")
-
 # check if GIS boundary is used to define KDE boundary
 if (gis.true =="TRUE"){
     
@@ -430,9 +427,20 @@ if (gis.true =="TRUE"){
     }
     area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
     
-    bbox <- c(area.shp@bbox["x","min"], area.shp@bbox["x","max"], area.shp@bbox["y","min"], area.shp@bbox["y","max"])
+    data.spdf@bbox["coords.x1", "min"] <- min(data.spdf@bbox["coords.x1", "min"], area.shp@bbox["x", "min"])
+    data.spdf@bbox["coords.x1", "max"] <- max(data.spdf@bbox["coords.x1", "max"], area.shp@bbox["x", "max"])
+    data.spdf@bbox["coords.x2", "min"] <- min(data.spdf@bbox["coords.x2", "min"], area.shp@bbox["y", "min"])
+    data.spdf@bbox["coords.x2", "max"] <- max(data.spdf@bbox["coords.x2", "max"], area.shp@bbox["y", "max"])
+    
+    # create point data
+    data.ppp <- as(data.spdf, "ppp")
+        
+    bbox <- c(min(data.ppp$window$xrange), max(data.ppp$window$xrange), min(data.ppp$window$yrange), max(data.ppp$window$yrange))
     kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128, lims=bbox) 
   } else {
+    # create point data
+    data.ppp <- as(data.spdf, "ppp")
+    
     kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128) 
   }
 
