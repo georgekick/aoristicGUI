@@ -394,7 +394,7 @@ if (!svalue(shp.file)==""){
     kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128, lims=bbox) 
   } else {
     kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128) 
-}
+  }
 
 # image(kde)
 # quantile(kde$z, 0.99)
