@@ -30,6 +30,10 @@ dtFormat <- c("mdy R*", "ymd R*") # see date_time_parse help for additional form
 data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE)
 data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE)
 
+if (grepl("TRUE", paste(names(table(is.na(data$FromDateTime))), collapse=""))){
+  stop("# Possible errors with FROM Date Time values. (e.g., missing Date/Time values)\n")
+}
+
 # check lat/lon values
 if (!class(data$lon)=="numeric") {stop ("Longitude column is not numeric")}
 if (!class(data$lat)=="numeric") {stop ("Latitude column is not numeric")}
