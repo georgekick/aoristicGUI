@@ -271,8 +271,11 @@ if (gis.true =="TRUE"){
   }
   area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
   
-  data.spdf@bbox <- area.shp@bbox
-
+  data.spdf@bbox["coords.x1", "min"] <- min(data.spdf@bbox["coords.x1", "min"], area.shp@bbox["x", "min"])
+  data.spdf@bbox["coords.x1", "max"] <- max(data.spdf@bbox["coords.x1", "max"], area.shp@bbox["x", "max"])
+  data.spdf@bbox["coords.x2", "min"] <- min(data.spdf@bbox["coords.x2", "min"], area.shp@bbox["y", "min"])
+  data.spdf@bbox["coords.x2", "max"] <- max(data.spdf@bbox["coords.x2", "max"], area.shp@bbox["y", "max"])
+    
   data.ppp <- as(data.spdf, "ppp")
    
   } else {
