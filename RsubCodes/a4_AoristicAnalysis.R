@@ -30,7 +30,6 @@ dtFormat <- c("mdy R*", "ymd R*") # see date_time_parse help for additional form
 data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE)
 data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE)
 
-
 # create duration variables
 duration <- as.numeric(difftime(data$ToDateTime, data$FromDateTime, units="hours") + 1 )
 HourFrom <- hour(data$FromDateTime)
@@ -39,6 +38,18 @@ duration <- ceiling(duration)
 # recode duration as 1 hour if timeTo is missing
 ## different method may be chosen in a function
 duration[is.na(duration)] <- 1
+
+# error handling of date
+if (grepl("TRUE", paste(names(table(duration<0)), collapse=""))){
+  cat("#############################################\n")
+  cat("# Possible errors with From DateTime and/or To DateTime.\n")
+  cat("# 1) Check the format of these date-time fields using Excel.\n")
+  cat("#    Once you open the file with Excel, select these date-time columns\n")
+  cat("#    and reset the date-time format by going to format cells.\n")
+  cat("# 2) Check if all of the ToDateTime values occur after the FromDateTime values.\n")
+  cat("#############################################\n")
+  duration[duration<0] <- 1  
+}
 
 # create df for aoristic --------------------
 id <- seq(1,nrow(data), 1)
