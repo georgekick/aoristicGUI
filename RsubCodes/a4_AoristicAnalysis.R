@@ -43,7 +43,7 @@ duration[is.na(duration)] <- 1
 e1 <- "FALSE"
 if (grepl("TRUE", paste(names(table(duration<0)), collapse=""))){
   cat("#############################################\n")
-  cat("# Possible errors with FROM Date Time and/or TO Date Time values.\n")
+  cat("# Possible errors with FROM/TO Date Time values.\n")
   cat("# Suggestions:\n")
   cat("# 1) Check the format of the date-time fields using Excel.\n")
   cat("#    Once you open your crime incident file with Excel, select these date-time columns\n")
@@ -233,13 +233,11 @@ if (!svalue(shp.file)==""){
 	cat(unlist(out["content",]), file=kmlFile, sep="\n")
 	cat(kmlPolygon()$footer, file=kmlFile, sep="\n")
 	close(kmlFile)
-	
+
+	# opening a KML file
+		browseURL(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))
 }
 
-# opening a KML file
-if (file.exists(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))){
-  browseURL(file.path(folder.location, "output", "GISboundary", "Aoristic_GIS_boundary.kml"))
-}
 
 #########################################3
 # Grid count method -------------
@@ -394,7 +392,7 @@ if (!svalue(shp.file)==""){
     kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128, lims=bbox) 
   } else {
     kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128) 
-}
+  }
 
 # image(kde)
 # quantile(kde$z, 0.99)
