@@ -30,6 +30,16 @@ dtFormat <- c("mdy R*", "ymd R*") # see date_time_parse help for additional form
 data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE)
 data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE)
 
+# check input values
+if (!class(data$FromDateTime)[1]=="POSIXct") {stop ("FROM DateTime column is wrongly specified")}
+if (!class(data$ToDateTime)[1]=="POSIXct") {stop ("TO DateTime column is wrongly specified")}
+if (!class(data$lon)=="numeric") {stop ("Longitude column is not numeric")}
+if (!class(data$lat)=="numeric") {stop ("Latitude column is not numeric")}
+
+if (min(data$lon) < -180 | max(data$lon) > 180) {stop ("Longitude values have invalid values (i.e., outside of (-180, 180) range")}
+if (min(data$lat) < -90  | max(data$lat) > 90) {stop ("Latitude values have invalid values (i.e., outside of (-90, 90) range")}
+
+
 # create duration variables
 duration <- as.numeric(difftime(data$ToDateTime, data$FromDateTime, units="hours") + 1 )
 HourFrom <- hour(data$FromDateTime)
@@ -254,22 +264,22 @@ dir.create(file.path(folder.location, "output", "Grid"), showWarnings = FALSE)
 setwd(file.path(folder.location, "output", "Grid"))
 
 # using GIS as the boundary of the grid count
-#if (gis.true =="TRUE"){
-#  area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
-#  if (!check_projection(area.shp)){
-#    area.shp <- reproject(area.shp, proj.WGS84@projargs)
-#  }
-#  area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
-#  
-#  data.spdf@bbox <- area.shp@bbox
-#  
-#  data.ppp <- as(data.spdf, "ppp")
-#    
-#  } else {
-#  
+if (gis.true =="TRUE"){
+  area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
+  if (!check_projection(area.shp)){
+    area.shp <- reproject(area.shp, proj.WGS84@projargs)
+  }
+  area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
+  
+  data.spdf@bbox <- area.shp@bbox
+
   data.ppp <- as(data.spdf, "ppp")
-#    
-#}
+   
+  } else {
+  
+  data.ppp <- as(data.spdf, "ppp")
+    
+}
 
 ## changed 2014/07/29 (spatstat-deprecated)
 ## Don't need this code?  bb may have been used initially to check missing coordinate values?
