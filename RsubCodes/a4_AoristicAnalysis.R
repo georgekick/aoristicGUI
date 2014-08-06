@@ -528,7 +528,7 @@ Sys.sleep(10)
  
   icon.url <- "https://dl.dropboxusercontent.com/u/121989515/kml/markers/icon57.png"
   
-  kml.folder <- setwd(file.path(folder.location, "output"))
+  kml.folder <- file.path(folder.location, "output")
   filename <- file(paste(kml.folder, "/", "Points.kml", , sep=""), "w",  blocking=FALSE)
   
   write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", filename)
@@ -578,13 +578,7 @@ Sys.sleep(10)
   write("</kml>", filename, append = TRUE)
   close(filename)
   
-  if (!missing(out.dir)){
-    browseURL(file.path(out.dir, kml.name))
-  } else {
-    browseURL(file.path(kml.name))
-  }
-  
-}
+browseURL(file.path(folder.location, "output", "Points.kml"))
 
 
 # ending message ----
