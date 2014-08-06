@@ -11,12 +11,12 @@ g <- ggroup(horizontal = FALSE, cont=w)
 
 # select a GIS file
 glabel("Step 2: Select a GIS boundary file (optional)", cont=g)
-shp.file <- gfilebrowse (text = "", type = "open", quote = FALSE, 
+shp.file <- try(gfilebrowse(text = "", type = "open", quote = FALSE, 
                          cont = g, toolkit = guiToolkit(),
                          filter = list("shp files" = list(patterns = c("*.shp")),
                                        "All files" = list(patterns = c("*")) 
-                         )
-)
+                                      )        
+                ) , silent=TRUE)
 
 glabel("", cont = g)
 
