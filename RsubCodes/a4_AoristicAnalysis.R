@@ -51,7 +51,7 @@ if (grepl("TRUE", paste(names(table(duration<0)), collapse=""))){
   cat("# 2) Check if all of the ToDateTime values occur later in time than the FromDateTime values.\n")
   cat("#############################################\n")
   duration[duration<0] <- 1  
-  Sys.sleep(8)
+  Sys.sleep(10)
 }
 
 # create df for aoristic --------------------
