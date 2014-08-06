@@ -253,7 +253,22 @@ cat("#############################################\n")
 dir.create(file.path(folder.location, "output", "Grid"), showWarnings = FALSE)
 setwd(file.path(folder.location, "output", "Grid"))
 
-data.ppp <- as(data.spdf, "ppp")
+if (gis.true =="TRUE"){
+  area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
+  if (!check_projection(area.shp)){
+    area.shp <- reproject(area.shp, proj.WGS84@projargs)
+  }
+  area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
+  
+  data.spdf@bbox <- area.shp@bbox
+  
+  data.ppp <- as(data.spdf, "ppp")
+    
+  } else {
+  
+  data.ppp <- as(data.spdf, "ppp")
+    
+}
 
 ## changed 2014/07/29 (spatstat-deprecated)
 ## Don't need this code?  bb may have been used initially to check missing coordinate values?
