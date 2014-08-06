@@ -51,7 +51,7 @@ if (grepl("TRUE", paste(names(table(duration<0)), collapse=""))){
   cat("# 2) Check if all of the ToDateTime values occur after the FromDateTime values.\n")
   cat("#############################################\n")
   duration[duration<0] <- 1  
-  Sys.sleep(10)
+  Sys.sleep(8)
 }
 
 # create df for aoristic --------------------
@@ -606,6 +606,6 @@ browseURL(file.path(folder.location, "output"))
 # gmessage("Done! Please use Google Earth to conduct your Aoristic Analysis", title="message", icon = "info") 
 
 cat("Quitting R\n")
-Sys.sleep(5)
+Sys.sleep(7)
 quit(save = "no", status = 0, runLast = TRUE)
 		
