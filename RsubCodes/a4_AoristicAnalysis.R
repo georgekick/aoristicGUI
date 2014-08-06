@@ -40,6 +40,7 @@ duration <- ceiling(duration)
 duration[is.na(duration)] <- 1
 
 # error handling of date
+e1 <- "FALSE"
 if (grepl("TRUE", paste(names(table(duration<0)), collapse=""))){
   cat("#############################################\n")
   cat("# Possible errors with From Date Time and/or To Date Time values.\n")
@@ -50,6 +51,7 @@ if (grepl("TRUE", paste(names(table(duration<0)), collapse=""))){
   cat("#    \"Format Cells\" --> \"Custom\" --> \"m/d/yyyy h:mm\".\n")
   cat("# 2) Check if all of the ToDateTime values occur later in time than the FromDateTime values.\n")
   cat("#############################################\n")
+  e1 <- "TRUE"
   duration[duration<0] <- 1  
   Sys.sleep(10)
 }
@@ -604,8 +606,12 @@ alarm()
 browseURL(file.path(folder.location, "output"))
 
 # gmessage("Done! Please use Google Earth to conduct your Aoristic Analysis", title="message", icon = "info") 
-
-cat("Quitting R\n")
-Sys.sleep(7)
-quit(save = "no", status = 0, runLast = TRUE)
-		
+if (!e1 == "TRUE"){
+  cat("Quitting R\n")
+  Sys.sleep(7)
+  quit(save = "no", status = 0, runLast = TRUE)
+} else {
+  cat("#############################################\n")
+  cat("# Please see the warning messages about the date-time fields above\n")
+  cat("#############################################\n")
+}		
