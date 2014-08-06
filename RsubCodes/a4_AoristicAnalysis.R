@@ -42,10 +42,10 @@ duration[is.na(duration)] <- 1
 # error handling of date
 if (grepl("TRUE", paste(names(table(duration<0)), collapse=""))){
   cat("#############################################\n")
-  cat("# Possible errors with From DateTime and/or To DateTime.\n")
-  cat("# 1) Check the format of these date-time fields using Excel.\n")
-  cat("#    Once you open the file with Excel, select these date-time columns\n")
-  cat("#    and reset the date-time format by going to format cells.\n")
+  cat("# Possible errors with From Date Time and/or To Date Time values.\n")
+  cat("# 1) Check the format of the date-time fields using Excel.\n")
+  cat("#    Once you open your crime incident file with Excel, select these date-time columns\n")
+  cat("#    and reset the date-time format by going to \"Format Cells\".\n")
   cat("# 2) Check if all of the ToDateTime values occur after the FromDateTime values.\n")
   cat("#############################################\n")
   duration[duration<0] <- 1  
