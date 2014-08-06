@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<kml xmlns='http://earth.google.com/kml/2.0'>
-<GroundOverlay>
-<name>R image</name>
-<Icon><href>C:/Users/gkikuchi/Documents/02 Research/00 Rpackages/aoristicAll/aoristicGUI/output/Density and Contour/Density.png</href><viewBoundScale>0.75</viewBoundScale></Icon>
-<LatLonBox><north>32.798342011811</north><south>32.596201388189</south><east>-97.0386322958884</east><west>-97.2612215437008</west></LatLonBox>
-</GroundOverlay></kml>
