@@ -117,8 +117,11 @@ data.spdf <- SpatialPointsDataFrame(data=data2, coords=matrix(c(data$lon, data$l
 data.spdf <- suppressMessages(reproject(data.spdf, proj.WGS84@projargs, show.output.on.console=FALSE))
 
 # check if the GIS boundary file was selected									
+gis.true <- "FALSE"
 if (!svalue(shp.file)==""){
 
+  gis.true <- "TRUE"
+  
 	cat("#############################################\n")
 	cat("# Creating Aoristic Graphs using the GIS boundary file...\n")
 	cat("#############################################\n")
@@ -382,12 +385,22 @@ cat("#############################################\n")
 cat("# Creating Aoristic Graphs with Kernel Density\n")
 cat("#############################################\n")
 
+# create output folder
 dir.create(file.path(folder.location, "output", "Density and Contour"), showWarnings = FALSE)
 setwd(file.path(folder.location, "output", "Density and Contour"))
 
+# create point data
 data.ppp <- as(data.spdf, "ppp")
 
-if (!svalue(shp.file)==""){
+# check if GIS boundary is used to define KDE boundary
+if (gis.true =="TRUE"){
+    
+    area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
+    if (!check_projection(area.shp)){
+      area.shp <- reproject(area.shp, proj.WGS84@projargs)
+    }
+    area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
+    
     bbox <- c(area.shp@bbox["x","min"], area.shp@bbox["x","max"], area.shp@bbox["y","min"], area.shp@bbox["y","max"])
     kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128, lims=bbox) 
   } else {
