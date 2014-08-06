@@ -568,7 +568,7 @@ if (gis.true =="TRUE"){
   data.spdf@bbox["coords.x2", "min"] <- min(data.spdf@bbox["coords.x2", "min"], area.shp@bbox["y", "min"])
   data.spdf@bbox["coords.x2", "max"] <- max(data.spdf@bbox["coords.x2", "max"], area.shp@bbox["y", "max"])
     
-  sp.pix <- kde.points(data.spdf, h=0.01, n=128)
+  sp.pix <- kde.points(data.spdf, h=0.01, n=128, lims=data.spdf)
 } else {
   sp.pix <- kde.points(data.spdf, h=0.01, n=128)
 }
