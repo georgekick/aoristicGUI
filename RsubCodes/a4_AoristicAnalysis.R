@@ -594,5 +594,5 @@ browseURL(file.path(folder.location, "output"))
 
 cat("Quitting R\n")
 Sys.sleep(5)
-# quit(save = "no", status = 0, runLast = TRUE)
+quit(save = "no", status = 0, runLast = TRUE)
 		
