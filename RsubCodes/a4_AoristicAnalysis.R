@@ -27,8 +27,8 @@ data <- data[!is.na(data$lat),]
 #data$FromDateTime <- mdy_hm(as.character(data$FromDateTime), quiet=TRUE)
 #data$ToDateTime <- mdy_hm(as.character(data$ToDateTime), quiet=TRUE)
 dtFormat <- c("mdy R*", "ymd R*") # see date_time_parse help for additional formatting
-data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=TRUE)
-data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=TRUE)
+data$FromDateTime <- parse_date_time(as.character(data$FromDateTime), orders=dtFormat, quiet=FALSE)
+data$ToDateTime   <- parse_date_time(as.character(data$ToDateTime),   orders=dtFormat, quiet=FALSE)
 
 # check input values
 if (!class(data$FromDateTime)[1]=="POSIXct") {stop ("FROM DateTime column is wrongly specified")}
