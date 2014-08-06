@@ -423,6 +423,7 @@ area.shp@proj4string <- proj.WGS84
 area.shp <- as(area.shp, "SpatialPolygonsDataFrame")
 area.shp@data$dummy <- seq(1, length(area.shp), 1)
 names(area.shp@data) <- "sortID"
+area.shp@data$sortID <- seq(1, length(area.shp), 1)
 
 # aggregate aoristic count through for-loop (Kernel Contour)----------
 
@@ -468,7 +469,7 @@ area.shp@data$Total <- rowSums(area.shp@data[,c("time0", "time1", "time2", "time
                                                 "time20", "time21", "time22", "time23")])
 	 
 out <- sapply(slot(area.shp, "polygons"), function(x) {kmlPolygon(x,
-                    name=paste("Crime Count: ", floor(as(area.shp, "data.frame")[slot(x, "ID"), "Total"]), sep=""), 
+                    name=paste("Crime Count: ", round(as(area.shp, "data.frame")[slot(x, "ID"), "Total"]), sep=""), 
 					lwd=3, border='black', 
                     description=paste("<img src=", 
                     as(area.shp, "data.frame")[slot(x, "ID"), "img"], " width=\"450\">", sep=""))})
