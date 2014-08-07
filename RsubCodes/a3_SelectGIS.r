@@ -24,16 +24,16 @@ gis.true <- gcheckbox(text=c("Use the boundary file's geographic extent for the 
 # select grid parameter
 glabel("", cont = g)
 
-glabel("Specify the number of grids in xy directions for grid counts \n (a minimum of 2)", cont = g)
+glabel("Grid Count Parameters \n The number of grids in xy directions", cont = g)
 nxy <- gedit(text = "5",  , cont = g)
 
 # select KDE parameters
 glabel("", cont = g)
 
-glabel("Specify the number of cells in xy directions for density analysis", cont = g)
+glabel("Kernel Density Parameters \n The number of cells in xy directions", cont = g)
 n.cell <- gedit(text = "256",  , cont = g)
 
-glabel("Specify the search radius for density analysis in lon/lat unit", cont = g)
+glabel("Bandwidth in lon/lat unit", cont = g)
 h.kde <- gedit(text = "0.01",  , cont = g)
 
 
