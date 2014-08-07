@@ -128,10 +128,9 @@ data.spdf <- SpatialPointsDataFrame(data=data2, coords=matrix(c(data$lon, data$l
 data.spdf <- suppressMessages(reproject(data.spdf, proj.WGS84@projargs, show.output.on.console=FALSE))
 
 # check if the GIS boundary file was selected									
-gis.true <- "FALSE"
 if (!svalue(shp.file)==""){
 
-  gis.true <- "TRUE"
+  # gis.true <- "TRUE"
   
 	cat("#############################################\n")
 	cat("# Creating Aoristic Graphs using the GIS boundary file...\n")
@@ -265,6 +264,8 @@ dir.create(file.path(folder.location, "output", "Grid"), showWarnings = FALSE)
 setwd(file.path(folder.location, "output", "Grid"))
 
 # using GIS as the boundary of the grid count
+gis.true <- svalue(gis.true)
+
 if (gis.true =="TRUE"){
   area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
   if (!check_projection(area.shp)){
@@ -272,13 +273,17 @@ if (gis.true =="TRUE"){
   }
   area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
   
-  data.spdf@bbox["coords.x1", "min"] <- min(data.spdf@bbox["coords.x1", "min"], area.shp@bbox["x", "min"])
-  data.spdf@bbox["coords.x1", "max"] <- max(data.spdf@bbox["coords.x1", "max"], area.shp@bbox["x", "max"])
-  data.spdf@bbox["coords.x2", "min"] <- min(data.spdf@bbox["coords.x2", "min"], area.shp@bbox["y", "min"])
-  data.spdf@bbox["coords.x2", "max"] <- max(data.spdf@bbox["coords.x2", "max"], area.shp@bbox["y", "max"])
+  data.spdf@bbox["coords.x1", "min"] <- area.shp@bbox["x", "min"]
+  data.spdf@bbox["coords.x1", "max"] <- area.shp@bbox["x", "max"]
+  data.spdf@bbox["coords.x2", "min"] <- area.shp@bbox["y", "min"]
+  data.spdf@bbox["coords.x2", "max"] <- area.shp@bbox["y", "max"]
     
   data.ppp <- as(data.spdf, "ppp")
-   
+  
+  # remove points outside of the gis boundary
+  win <- owin(c(area.shp@bbox["x", "min"], area.shp@bbox["x", "max"]), c(area.shp@bbox["y", "min"], area.shp@bbox["y", "max"]))
+  data.ppp <- data.ppp[win]
+  
   } else {
   
   data.ppp <- as(data.spdf, "ppp")
@@ -289,7 +294,13 @@ if (gis.true =="TRUE"){
 ## Don't need this code?  bb may have been used initially to check missing coordinate values?
 ## bb <- boundingbox(data.ppp) ## bb <- bounding.box(data.ppp)
 
-qc <- quadratcount(data.ppp, nx=5, ny=5)
+nxy <- as.numeric(svalue(nxy))
+if (nxy<2){
+  cat("the number of grids in xy directions needs to be 2 or greater. the default value of 5 is used\n")
+  nxy <- 5
+}
+
+qc <- quadratcount(data.ppp, nx=nxy, ny=nxy)
 
 x <- list()
 for (i in 1:(length(attr(qc, "tess")$xgrid)-1)){
@@ -419,6 +430,8 @@ cat("#############################################\n")
 dir.create(file.path(folder.location, "output", "Density and Contour"), showWarnings = FALSE)
 setwd(file.path(folder.location, "output", "Density and Contour"))
 
+n.cell <- as.numeric(svalue(n.cell))
+
 # check if GIS boundary is used to define KDE boundary
 if (gis.true =="TRUE"){
     
@@ -428,21 +441,21 @@ if (gis.true =="TRUE"){
     }
     area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
     
-    data.spdf@bbox["coords.x1", "min"] <- min(data.spdf@bbox["coords.x1", "min"], area.shp@bbox["x", "min"])
-    data.spdf@bbox["coords.x1", "max"] <- max(data.spdf@bbox["coords.x1", "max"], area.shp@bbox["x", "max"])
-    data.spdf@bbox["coords.x2", "min"] <- min(data.spdf@bbox["coords.x2", "min"], area.shp@bbox["y", "min"])
-    data.spdf@bbox["coords.x2", "max"] <- max(data.spdf@bbox["coords.x2", "max"], area.shp@bbox["y", "max"])
+    data.spdf@bbox["coords.x1", "min"] <- area.shp@bbox["x", "min"]
+    data.spdf@bbox["coords.x1", "max"] <- area.shp@bbox["x", "max"]
+    data.spdf@bbox["coords.x2", "min"] <- area.shp@bbox["y", "min"]
+    data.spdf@bbox["coords.x2", "max"] <- area.shp@bbox["y", "max"]
     
     # create point data
     data.ppp <- as(data.spdf, "ppp")
         
     bbox <- c(min(data.ppp$window$xrange), max(data.ppp$window$xrange), min(data.ppp$window$yrange), max(data.ppp$window$yrange))
-    kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128, lims=bbox) 
+    kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=n.cell, lims=bbox) 
   } else {
     # create point data
     data.ppp <- as(data.spdf, "ppp")
     
-    kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=128) 
+    kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=n.cell) 
   }
 
 # image(kde)
@@ -563,14 +576,14 @@ if (gis.true =="TRUE"){
   }
   area.shp <- suppressMessages(reproject(area.shp, proj.WGS84@projargs, show.output.on.console=FALSE)) 
 
-  data.spdf@bbox["coords.x1", "min"] <- min(data.spdf@bbox["coords.x1", "min"], area.shp@bbox["x", "min"])
-  data.spdf@bbox["coords.x1", "max"] <- max(data.spdf@bbox["coords.x1", "max"], area.shp@bbox["x", "max"])
-  data.spdf@bbox["coords.x2", "min"] <- min(data.spdf@bbox["coords.x2", "min"], area.shp@bbox["y", "min"])
-  data.spdf@bbox["coords.x2", "max"] <- max(data.spdf@bbox["coords.x2", "max"], area.shp@bbox["y", "max"])
+  data.spdf@bbox["coords.x1", "min"] <- area.shp@bbox["x", "min"]
+  data.spdf@bbox["coords.x1", "max"] <- area.shp@bbox["x", "max"]
+  data.spdf@bbox["coords.x2", "min"] <- area.shp@bbox["y", "min"]
+  data.spdf@bbox["coords.x2", "max"] <- area.shp@bbox["y", "max"]
     
-  sp.pix <- kde.points(data.spdf, h=0.01, n=128, lims=data.spdf)
+  sp.pix <- kde.points(data.spdf, h=0.01, n=n.cell, lims=data.spdf)
 } else {
-  sp.pix <- kde.points(data.spdf, h=0.01, n=128)
+  sp.pix <- kde.points(data.spdf, h=0.01, n=n.cell)
 }
 
 sp.grd <- as(sp.pix, "SpatialGridDataFrame")
@@ -592,7 +605,9 @@ Lab.palette <-
 image(as.image.SpatialGridDataFrame(sp.grd[1]), col=Lab.palette(10),
       xlim=sp.grd.kml$xlim, ylim=sp.grd.kml$ylim)
 
-kmlOverlay(sp.grd.kml, paste(tf, ".kml", sep=""), paste(tf, ".png", sep=""))
+# kmlOverlay(sp.grd.kml, paste(tf, ".kml", sep=""), paste(tf, ".png", sep=""))
+kmlOverlay(sp.grd.kml, kmlfile=paste(tf, ".kml", sep=""), imagefile="Density.png"), name="Density")
+
 dev.off()
 
 # opening KML files
@@ -629,6 +644,7 @@ cat("#############################################\n")
   write("<Style id=\"style1\">",filename, append = TRUE)
   write("<IconStyle>", filename, append = TRUE)
   write(paste("<Icon><href>", icon.url, "</href></Icon>", sep=""), filename, append = TRUE)
+  write("<scale>0.3</scale>", filename, append = TRUE)
   write("</IconStyle>", filename, append = TRUE)
   write("</Style>", filename, append = TRUE)
    
@@ -640,14 +656,16 @@ cat("#############################################\n")
     
     write("<styleUrl>#style1</styleUrl>", filename, append=TRUE)
     
-    # write("<description>\n", filename, append = TRUE)
-    # write(print(xtable(t(data.spdf@data[i,])), 
-    #            type="html", 
-    #            include.colnames=FALSE,
-    #            html.table.attributes = "border=\"1\"")
-    #      , filename, append=TRUE)
-    # write("</description>", filename, append = TRUE)          
-        
+    if (svalue(html)=="TRUE"){
+      write("<description>\n", filename, append = TRUE)
+      write(print(xtable(t(data.spdf@data[i,])), 
+                type="html", 
+                include.colnames=FALSE,
+                html.table.attributes = "border=\"1\"")
+          , filename, append=TRUE)
+      write("</description>", filename, append = TRUE)          
+      }    
+      
     write("<Point>", filename, append = TRUE)
     write("<coordinates>", filename, append = TRUE)
     write(paste(coordinates(data.spdf)[i,1], coordinates(data.spdf)[i,2], sep=","), filename, append = TRUE)
