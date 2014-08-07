@@ -120,10 +120,10 @@ setwd(file.path(folder.location, "output"))
 # create All Areas Aoristic Graph
 #ggplot(graph, aes(x=hour, y=freq)) + geom_bar(stat="identity") + ggtitle("Aoristic Graph for the Entire Study Area")
 # with probability labels
-graph$prob <- paste(round(graph$freq / sum(graph$freq) * 100, 1), "%", sep="")
+graph$prob <- paste(round(graph$freq / sum(graph$freq) * 100, 0), "%", sep="")
 ggplot(graph, aes(x=hour, y=freq)) + geom_bar(stat="identity") + 
   ggtitle("Aoristic Graph for the Entire Study Area") + 
-  geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=4)
+  geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=3)
 
 ggsave("allAreasAoristicGraph.png", width = 6, height = 4)
 
@@ -208,12 +208,13 @@ if (!svalue(shp.file)==""){
 	for (i in 1:nrow(area.shp@data)){
   
 		graph.temp<-graph2[graph2$sortID==i,]
-		graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 1), "%", sep="")
-		
+		graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 0), "%", sep="")
+		graph.temp$prob[round(graph.temp$freq / sum(graph.temp$freq) * 100, 0)<0.1] <- ""
+    
 		p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
           geom_bar(stat="identity") +
           ylim(0, max(graph2$freq)) + 
-		      geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=4)
+		      geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=3)
   
 	ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
 	area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
@@ -387,12 +388,13 @@ graph2 <- graph2[order(graph2[1], graph2$hour),]
 for (i in 1:nrow(area.shp@data)){
   
   graph.temp<-graph2[graph2$sortID==i,]
-  graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 1), "%", sep="")
+  graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 0), "%", sep="")
+  graph.temp$prob[round(graph.temp$freq / sum(graph.temp$freq) * 100, 0)<0.1] <- ""
   
   p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
     geom_bar(stat="identity") +
     ylim(0, max(graph2$freq)) + 
-    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=4)
+    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=3)
 
   ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
   area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
@@ -546,12 +548,13 @@ graph2 <- graph2[order(graph2[1], graph2$hour),]
 for (i in 1:nrow(area.shp@data)){
   
   graph.temp<-graph2[graph2$sortID==i,]
-  graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 1), "%", sep="")
+  graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 0), "%", sep="")
+  graph.temp$prob[round(graph.temp$freq / sum(graph.temp$freq) * 100, 0)<0.1] <- ""
   
   p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
     geom_bar(stat="identity") +
     ylim(0, max(graph2$freq)) + 
-    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=4)
+    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=3)
   
   ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
   area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
@@ -637,7 +640,7 @@ browseURL(file.path(folder.location, "output", "Density and Contour", "Aoristic_
 
 # Creating Point KML file -----
 cat("#############################################\n")
-cat("# Creating Point KML file\n")
+cat("# Creating a Point KML file\n")
 cat("#############################################\n")
 
   data <- read.table(svalue(browse.file), header=TRUE, sep=",")
