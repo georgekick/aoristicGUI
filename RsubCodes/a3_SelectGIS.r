@@ -59,6 +59,8 @@ OUTPUTgroup <- gframe("Create analysis outputs in...", container = g, horizontal
 out_dir <- gfilebrowse(text = "Select a directory ...",
                          quote = FALSE,
                          type = "selectdir", cont = OUTPUTgroup)
+glabel("", cont = g)
+
 addSpring(g)
 
 next.button <- gbutton("Analyze! (click only once)", cont=g)
