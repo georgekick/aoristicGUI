@@ -606,7 +606,7 @@ image(as.image.SpatialGridDataFrame(sp.grd[1]), col=Lab.palette(10),
       xlim=sp.grd.kml$xlim, ylim=sp.grd.kml$ylim)
 
 # kmlOverlay(sp.grd.kml, paste(tf, ".kml", sep=""), paste(tf, ".png", sep=""))
-kmlOverlay(sp.grd.kml, kmlfile=paste(tf, ".kml", sep=""), imagefile="Density.png", name="Density")
+kmlOverlay(sp.grd.kml, kmlfile=paste(tf, ".kml", sep=""), imagefile="Density.png", name="Aoristic_Density")
 
 dev.off()
 
@@ -697,7 +697,7 @@ if (!e1 == "TRUE"){
   cat("Quitting R\n")
   
   Sys.sleep(7)
-  quit(save = "no", status = 0, runLast = TRUE)
+  # quit(save = "no", status = 0, runLast = TRUE)
 } else {
   cat("#############################################\n")
   cat("# Please see the warning messages about the date-time fields above.\n")
