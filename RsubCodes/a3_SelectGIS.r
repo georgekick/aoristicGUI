@@ -18,6 +18,33 @@ shp.file <- try(gfilebrowse(text = "", type = "open", quote = FALSE,
                                       )        
                 ) , silent=TRUE)
 
+# use the GIS file's geographic extent for the grid/KDE analysis
+glabel("", cont = g)
+
+gis.true <- gcheckboxgroup(items=c("Use the GIS file's geographic extent for the grid and density analysis"), 
+                           checked=FALSE, cont=g) 
+
+# select grid parameter
+glabel("", cont = g)
+
+glabel("Specify the number of grids in xy directions for grid counts(a minimum of 2)", cont = g)
+nxy <- gedit(text = "5",  , cont = g)
+
+# select KDE cell parameter
+glabel("", cont = g)
+
+glabel("Specify the number of cells in xy directions for Kernel Density (recommended values: 128 - 256)", cont = g)
+n.cell <- gedit(text = "128",  , cont = g)
+
+
+# kml point file with HTML table?
+glabel("", cont = g)
+
+html <- gcheckboxgroup(items=c("Crate a kml point file with an HTML pop-up data table), 
+                           checked=TRUE, cont=g) 
+
+
+# select output file directory
 glabel("", cont = g)
 
 glabel("Create analysis outputs in...", cont = g)
