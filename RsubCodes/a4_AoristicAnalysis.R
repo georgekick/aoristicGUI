@@ -4,10 +4,14 @@ cat("#############################################\n")
 cat("#############################################\n")
 cat("# Creating an Aoristic Graph for the Entire Study Area...\n")
 cat("#############################################\n")
-
+stop()
 # folder.location <- dirname(svalue(browse.file))
-folder.location <- svalue(out_dir)
-
+if (!svalue(out_dir)==""){
+  folder.location <- svalue(out_dir)
+} else {
+  folder.location <- getwd()
+}
+  
 setwd(folder.location)
 
 # output file folder
@@ -114,7 +118,13 @@ graph <- graph[order(graph$hour),]
 setwd(file.path(folder.location, "output"))
 
 # create All Areas Aoristic Graph
-ggplot(graph, aes(x=hour, y=freq)) + geom_bar(stat="identity") + ggtitle("Aoristic Graph for the Entire Study Area")
+#ggplot(graph, aes(x=hour, y=freq)) + geom_bar(stat="identity") + ggtitle("Aoristic Graph for the Entire Study Area")
+# with probability labels
+graph$prob <- paste(round(graph$freq / sum(graph$freq) * 100, 1), "%", sep="")
+ggplot(graph, aes(x=hour, y=freq)) + geom_bar(stat="identity") + 
+  ggtitle("Aoristic Graph for the Entire Study Area") + 
+  geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=4)
+
 ggsave("allAreasAoristicGraph.png", width = 6, height = 4)
 
 							   
@@ -658,7 +668,7 @@ cat("#############################################\n")
     
     if (svalue(html)=="TRUE"){
       write("<description>\n", filename, append = TRUE)
-      write(print(xtable(t(data.spdf@data[i,])), 
+      write(print(xtable(t(data.spdf@data[i,])), print.results = getOption("xtable.print.results", FALSE), 
                 type="html", 
                 include.colnames=FALSE,
                 html.table.attributes = "border=\"1\"")
