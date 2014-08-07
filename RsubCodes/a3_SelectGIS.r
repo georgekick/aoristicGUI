@@ -4,14 +4,13 @@ cat("# Please minimize or move the R Console screen, if you do not see the Step 
 cat("#############################################\n")
 
 # create a window 
-w <- gwindow("Step 2: GIS and Other Parameter Specifications")
+w <- gwindow("Step 2: Parameter Specifications")
 
 g <- ggroup(horizontal = FALSE, cont=w)
 GISgroup <- gframe("Select a GIS boundary file (optional)", container = g, horizontal=FALSE)
 
 
 # select a GIS file
-glabel("Select a GIS boundary file (optional)", cont=g)
 shp.file <- try(gfilebrowse(text = "", type = "open", quote = FALSE, 
                          cont = GISgroup, toolkit = guiToolkit(),
                          filter = list("shp files" = list(patterns = c("*.shp")),
@@ -48,7 +47,7 @@ glabel("", cont = g)
 
 KMLgroup <- gframe("KML point file", container = g, horizontal=FALSE)
 
-html <- gcheckbox(text=c("Create a kml point file with an HTML pop-up data table"), 
+html <- gcheckbox(text=c("Create a kml point file with a pop-up data table"), 
                            checked=TRUE, cont=KMLgroup) 
 
 
