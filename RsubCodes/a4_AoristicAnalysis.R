@@ -123,7 +123,7 @@ setwd(file.path(folder.location, "output"))
 graph$prob <- paste(round(graph$freq / sum(graph$freq) * 100, 1), "%", sep="")
 ggplot(graph, aes(x=hour, y=freq)) + geom_bar(stat="identity") + 
   ggtitle("Aoristic Graph for the Entire Study Area") + 
-  geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=2.5)
+  geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=2)
 
 ggsave("allAreasAoristicGraph.png", width = 6, height = 4)
 
@@ -214,7 +214,7 @@ if (!svalue(shp.file)==""){
 		p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
           geom_bar(stat="identity") +
           ylim(0, max(graph2$freq)) + 
-		      geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=2.5)
+		      geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=2)
   
 	ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
 	area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
@@ -394,7 +394,7 @@ for (i in 1:nrow(area.shp@data)){
   p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
     geom_bar(stat="identity") +
     ylim(0, max(graph2$freq)) + 
-    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=2.5)
+    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=2)
 
   ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
   area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
@@ -554,7 +554,7 @@ for (i in 1:nrow(area.shp@data)){
   p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
     geom_bar(stat="identity") +
     ylim(0, max(graph2$freq)) + 
-    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=2.5)
+    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=2)
   
   ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
   area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
