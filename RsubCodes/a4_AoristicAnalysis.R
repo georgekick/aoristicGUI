@@ -6,7 +6,7 @@ cat("# Creating an Aoristic Graph for the Entire Study Area...\n")
 cat("#############################################\n")
 
 # folder.location <- dirname(svalue(browse.file))
-if (!svalue(out_dir)==""){
+if (!svalue(out_dir)=="Select a directory ..."){
   folder.location <- svalue(out_dir)
 } else {
   folder.location <- getwd()
@@ -310,7 +310,7 @@ if (gis.true =="TRUE"){
 
 nxy <- as.numeric(svalue(nxy))
 if (nxy<2){
-  cat("the number of grids in xy directions needs to be 2 or greater. the default value of 5 is used\n")
+  cat("# The number of grids in xy directions needs to be 2 or greater. The default value of 5 is used\n")
   nxy <- 5
 }
 
