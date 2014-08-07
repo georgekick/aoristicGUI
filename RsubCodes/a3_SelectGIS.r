@@ -19,7 +19,7 @@ shp.file <- try(gfilebrowse(text = "", type = "open", quote = FALSE,
                 ) , silent=TRUE)
 
 # use the boundary file's geographic extent for the grid/KDE analysis
-gis.true <- gcheckbox(text=c("Use the boundary file's geographic extent in all analyses)"), 
+gis.true <- gcheckbox(text=c("Use the boundary file's geographic extent in all analyses"), 
                            checked=FALSE, cont=GISgroup) 
 
 # select grid parameter
