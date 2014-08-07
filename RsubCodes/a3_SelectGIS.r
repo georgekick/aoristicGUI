@@ -40,7 +40,7 @@ n.cell <- gedit(text = "128",  , cont = g)
 # kml point file with HTML table?
 glabel("", cont = g)
 
-html <- gcheckboxgroup(items=c("Crate a kml point file with an HTML pop-up data table), 
+html <- gcheckboxgroup(items=c("Crate a kml point file with an HTML pop-up data table"), 
                            checked=TRUE, cont=g) 
 
 
