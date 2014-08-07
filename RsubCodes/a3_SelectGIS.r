@@ -18,22 +18,22 @@ shp.file <- try(gfilebrowse(text = "", type = "open", quote = FALSE,
                 ) , silent=TRUE)
 
 # use the boundary file's geographic extent for the grid/KDE analysis
-gis.true <- gcheckbox(text=c("Use the boundary file's geographic extent for the grid and density analysis.\n (If unchecked, the geographic extent of the incident data will be used)"), 
+gis.true <- gcheckbox(text=c("Use the boundary file's geographic extent in all analyses)"), 
                            checked=FALSE, cont=g) 
 
 # select grid parameter
 glabel("", cont = g)
 
-glabel("Specify the number of grids in xy directions for grid counts \n (a minimum of 2)", cont = g)
+glabel("Grid Count Parameters \n The number of grids in xy directions", cont = g)
 nxy <- gedit(text = "5",  , cont = g)
 
 # select KDE parameters
 glabel("", cont = g)
 
-glabel("Specify the number of cells in xy directions for density analysis", cont = g)
+glabel("Kernel Density Parameters \n The number of cells in xy directions", cont = g)
 n.cell <- gedit(text = "256",  , cont = g)
 
-glabel("Specify the search radius for density analysis in lon/lat unit", cont = g)
+glabel("Bandwidth in lon/lat unit", cont = g)
 h.kde <- gedit(text = "0.01",  , cont = g)
 
 
