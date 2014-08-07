@@ -7,11 +7,13 @@ cat("#############################################\n")
 w <- gwindow("Step 2: GIS and Other Parameter Specifications")
 
 g <- ggroup(horizontal = FALSE, cont=w)
+GISgroup <- gframe("Select a GIS boundary file (optional)", container = g, horizontal=FALSE)
+
 
 # select a GIS file
 glabel("Select a GIS boundary file (optional)", cont=g)
 shp.file <- try(gfilebrowse(text = "", type = "open", quote = FALSE, 
-                         cont = g, toolkit = guiToolkit(),
+                         cont = GISgroup, toolkit = guiToolkit(),
                          filter = list("shp files" = list(patterns = c("*.shp")),
                                        "All files" = list(patterns = c("*")) 
                                       )        
@@ -19,38 +21,45 @@ shp.file <- try(gfilebrowse(text = "", type = "open", quote = FALSE,
 
 # use the boundary file's geographic extent for the grid/KDE analysis
 gis.true <- gcheckbox(text=c("Use the boundary file's geographic extent in all analyses)"), 
-                           checked=FALSE, cont=g) 
+                           checked=FALSE, cont=GISgroup) 
 
 # select grid parameter
 glabel("", cont = g)
 
-glabel("Grid Count Parameters \n The number of grids in xy directions", cont = g)
-nxy <- gedit(text = "5",  , cont = g)
+GRIDgroup <- gframe("Grid Count Parameters", container = g, horizontal=FALSE)
+
+glabel("The number of grids in xy directions", cont = GRIDgroup)
+nxy <- gedit(text = "5",  , cont = GRIDgroup)
 
 # select KDE parameters
 glabel("", cont = g)
 
-glabel("Kernel Density Parameters \n The number of cells in xy directions", cont = g)
-n.cell <- gedit(text = "256",  , cont = g)
+KDEgroup <- gframe("Kernel Density Parameters", container = g, horizontal=FALSE)
 
-glabel("Bandwidth in lon/lat unit", cont = g)
-h.kde <- gedit(text = "0.01",  , cont = g)
+glabel("The number of cells in xy directions", cont = KDEgroup)
+n.cell <- gedit(text = "256",  , cont = KDEgroup)
+
+glabel("Bandwidth in lon/lat unit", cont = KDEgroup)
+h.kde <- gedit(text = "0.01",  , cont = KDEgroup)
 
 
 # kml point file with HTML table?
 glabel("", cont = g)
 
+KMLgroup <- gframe("KML point file", container = g, horizontal=FALSE)
+
 html <- gcheckbox(text=c("Create a kml point file with an HTML pop-up data table"), 
-                           checked=TRUE, cont=g) 
+                           checked=TRUE, cont=KMLgroup) 
 
 
 # select output file directory
 glabel("", cont = g)
 
-glabel("Create analysis outputs in...", cont = g)
+OUTPUTgroup <- gframe("Create analysis outputs in...", container = g, horizontal=FALSE)
+
 out_dir <- gfilebrowse(text = "Select a directory ...",
                          quote = FALSE,
-                         type = "selectdir", cont = g)
+                         type = "selectdir", cont = OUTPUTgroup)
 addSpring(g)
 
 next.button <- gbutton("Analyze! (click only once)", cont=g)
