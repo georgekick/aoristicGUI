@@ -18,7 +18,7 @@ shp.file <- try(gfilebrowse(text = "", type = "open", quote = FALSE,
                 ) , silent=TRUE)
 
 # use the boundary file's geographic extent for the grid/KDE analysis
-gis.true <- gcheckboxgroup(items=c("Use the boundary file's geographic extent for the grid and density analysis.\n (If unchecked, the geographic extent of the incident data will be used)"), 
+gis.true <- gcheckbox(text=c("Use the boundary file's geographic extent for the grid and density analysis.\n (If unchecked, the geographic extent of the incident data will be used)"), 
                            checked=FALSE, cont=g) 
 
 # select grid parameter
@@ -37,7 +37,7 @@ n.cell <- gedit(text = "128",  , cont = g)
 # kml point file with HTML table?
 glabel("", cont = g)
 
-html <- gcheckboxgroup(items=c("Crate a kml point file with an HTML pop-up data table"), 
+html <- gcheckbox(text=c("Crate a kml point file with an HTML pop-up data table"), 
                            checked=TRUE, cont=g) 
 
 
