@@ -1,5 +1,5 @@
 cat("#############################################\n")
-cat("# Step 2: Select a GIS boundary file (optional)\n")
+cat("# Step 2: Select a GIS boundary file (optional) and specify other parameters\n")
 cat("# Please minimize or move the R Console screen, if you do not see the Step 2 dialog\n")
 cat("#############################################\n")
 
