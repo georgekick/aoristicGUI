@@ -6,7 +6,7 @@ cat("# Creating an Aoristic Graph for the Entire Study Area...\n")
 cat("#############################################\n")
 
 # folder.location <- dirname(svalue(browse.file))
-if (!svalue(out_dir)==""){
+if (!svalue(out_dir)=="Select a directory ..."){
   folder.location <- svalue(out_dir)
 } else {
   folder.location <- getwd()
