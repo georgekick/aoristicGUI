@@ -449,6 +449,7 @@ dir.create(file.path(folder.location, "output", "Density and Contour"), showWarn
 setwd(file.path(folder.location, "output", "Density and Contour"))
 
 n.cell <- as.numeric(svalue(n.cell))
+h.kde <- as.numeric(svalue(h.kde))
 
 # check if GIS boundary is used to define KDE boundary
 if (gis.true =="TRUE"){
@@ -468,12 +469,12 @@ if (gis.true =="TRUE"){
     data.ppp <- as(data.spdf, "ppp")
         
     bbox <- c(min(data.ppp$window$xrange), max(data.ppp$window$xrange), min(data.ppp$window$yrange), max(data.ppp$window$yrange))
-    kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=n.cell, lims=bbox) 
+    kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=h.kde, n=n.cell, lims=bbox) 
   } else {
     # create point data
     data.ppp <- as(data.spdf, "ppp")
     
-    kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=0.01, n=n.cell) 
+    kde <- kde2d(x=data.ppp$x, y=data.ppp$y, h=h.kde, n=n.cell) 
   }
 
 # image(kde)
@@ -603,9 +604,9 @@ if (gis.true =="TRUE"){
   data.spdf@bbox["coords.x2", "min"] <- area.shp@bbox["y", "min"]
   data.spdf@bbox["coords.x2", "max"] <- area.shp@bbox["y", "max"]
     
-  sp.pix <- kde.points(data.spdf, h=0.01, n=n.cell, lims=data.spdf)
+  sp.pix <- kde.points(data.spdf, h=h.kde, n=n.cell, lims=data.spdf)
 } else {
-  sp.pix <- kde.points(data.spdf, h=0.01, n=n.cell)
+  sp.pix <- kde.points(data.spdf, h=h.kde, n=n.cell)
 }
 
 sp.grd <- as(sp.pix, "SpatialGridDataFrame")

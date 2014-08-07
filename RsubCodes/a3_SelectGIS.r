@@ -27,11 +27,14 @@ glabel("", cont = g)
 glabel("Specify the number of grids in xy directions for grid counts \n (a minimum of 2)", cont = g)
 nxy <- gedit(text = "5",  , cont = g)
 
-# select KDE cell parameter
+# select KDE parameters
 glabel("", cont = g)
 
-glabel("Specify the number of cells in xy directions for density analysis\n (a large value results in a smooth density surface)", cont = g)
+glabel("Specify the number of cells in xy directions for density analysis", cont = g)
 n.cell <- gedit(text = "256",  , cont = g)
+
+glabel("Specify the search radius for density analysis in lon/lat unit", cont = g)
+h.kde <- gedit(text = "0.01",  , cont = g)
 
 
 # kml point file with HTML table?
