@@ -606,7 +606,7 @@ image(as.image.SpatialGridDataFrame(sp.grd[1]), col=Lab.palette(10),
       xlim=sp.grd.kml$xlim, ylim=sp.grd.kml$ylim)
 
 # kmlOverlay(sp.grd.kml, paste(tf, ".kml", sep=""), paste(tf, ".png", sep=""))
-kmlOverlay(sp.grd.kml, kmlfile=paste(tf, ".kml", sep=""), imagefile="Density.png"), name="Density")
+kmlOverlay(sp.grd.kml, kmlfile=paste(tf, ".kml", sep=""), imagefile="Density.png", name="Density")
 
 dev.off()
 
