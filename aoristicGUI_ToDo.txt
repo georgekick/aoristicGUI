@@ -1,0 +1,15 @@
+### create kmz
+
+http://blog.lib.umn.edu/moor0554/canoemoore/2010/07/compressing_kml_files_with_r.html
+
+zip() should be able to accomodate multiple files via the files argument
+
+library(maptools)
+data(wrld_simpl)
+sw <- slot(wrld_simpl[wrld_simpl$NAME=="South Africa",], "polygons")[[1]]
+tf <- tempfile()
+kmlPolygon(sw, kmlfile=paste(tf, ".kml", sep=""), name="South Africa", col="#df0000aa", lwd=5, border=4, kmlname="KMZ test", kmldescription="<i>KMZ</i> file created with <a href='http://www.r-project.org'>R</a>.")
+install.packages("Rcompression", repos="http://www.omegahat.org/R")
+library(Rcompression)
+zip(zipfile=paste(tf, ".kmz", sep=""), files=paste(tf, ".kml", sep=""))
+paste(tf, ".kmz", sep="") #path and filename
