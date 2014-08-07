@@ -4,7 +4,7 @@ cat("#############################################\n")
 cat("#############################################\n")
 cat("# Creating an Aoristic Graph for the Entire Study Area...\n")
 cat("#############################################\n")
-stop()
+
 # folder.location <- dirname(svalue(browse.file))
 if (!svalue(out_dir)==""){
   folder.location <- svalue(out_dir)
@@ -208,9 +208,12 @@ if (!svalue(shp.file)==""){
 	for (i in 1:nrow(area.shp@data)){
   
 		graph.temp<-graph2[graph2$sortID==i,]
+		graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 1), "%", sep="")
+		
 		p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
           geom_bar(stat="identity") +
-          ylim(0, max(graph2$freq))
+          ylim(0, max(graph2$freq)) + 
+		      geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=4)
   
 	ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
 	area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
@@ -384,10 +387,13 @@ graph2 <- graph2[order(graph2[1], graph2$hour),]
 for (i in 1:nrow(area.shp@data)){
   
   graph.temp<-graph2[graph2$sortID==i,]
+  graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 1), "%", sep="")
+  
   p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
     geom_bar(stat="identity") +
-    ylim(0, max(graph2$freq))
-  
+    ylim(0, max(graph2$freq)) + 
+    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=4)
+
   ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
   area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
 }
@@ -540,9 +546,12 @@ graph2 <- graph2[order(graph2[1], graph2$hour),]
 for (i in 1:nrow(area.shp@data)){
   
   graph.temp<-graph2[graph2$sortID==i,]
+  graph.temp$prob <- paste(round(graph.temp$freq / sum(graph.temp$freq) * 100, 1), "%", sep="")
+  
   p <- ggplot(graph.temp, aes(x=hour, y=freq)) + 
     geom_bar(stat="identity") +
-    ylim(0, max(graph2$freq))
+    ylim(0, max(graph2$freq)) + 
+    geom_text(aes(y=freq, label=prob), vjust=1.5, colour="white", size=4)
   
   ggsave(filename=paste("sortID_", i, ".png", sep=""), plot=p, width = 6, height = 4)
   area.shp@data$img[i] <-  paste("sortID_", i, ".png", sep="")
