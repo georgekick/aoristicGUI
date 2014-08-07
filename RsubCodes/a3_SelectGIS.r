@@ -30,14 +30,14 @@ nxy <- gedit(text = "5",  , cont = g)
 # select KDE cell parameter
 glabel("", cont = g)
 
-glabel("Specify the number of cells in xy directions for density analysis\n (recommended values: 128 - 256)", cont = g)
-n.cell <- gedit(text = "128",  , cont = g)
+glabel("Specify the number of cells in xy directions for density analysis\n (a large value results in a smooth density surface)", cont = g)
+n.cell <- gedit(text = "256",  , cont = g)
 
 
 # kml point file with HTML table?
 glabel("", cont = g)
 
-html <- gcheckbox(text=c("Crate a kml point file with an HTML pop-up data table"), 
+html <- gcheckbox(text=c("Create a kml point file with an HTML pop-up data table"), 
                            checked=TRUE, cont=g) 
 
 
