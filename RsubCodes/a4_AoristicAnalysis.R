@@ -264,7 +264,8 @@ dir.create(file.path(folder.location, "output", "Grid"), showWarnings = FALSE)
 setwd(file.path(folder.location, "output", "Grid"))
 
 # using GIS as the boundary of the grid count
-gis.true <- svalue(gis.true)
+# gis.true <- svalue(gis.true)
+gis.true <- "FALSE"
 
 if (gis.true =="TRUE"){
   area.shp <-  readOGR(dsn=dsn, layer=shp.file, verbose=FALSE)
