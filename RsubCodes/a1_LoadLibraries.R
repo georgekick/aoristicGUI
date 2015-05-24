@@ -43,6 +43,7 @@ cat("#############################\n")
 	"scales",
 	"sp",
 	"stringr",
+  "dismo",
 	"plotKML",
   "xtable"
     ) 
@@ -88,6 +89,7 @@ suppressMessages(suppressWarnings(library(scales, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(sp, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(stringr, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(plotKML, quietly=TRUE)))
+suppressMessages(suppressWarnings(library(dismo, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(xtable, quietly=TRUE)))
 
 # source(file.path(folder.location, "RsubCodes/a2_SelectCSV.r")) 
