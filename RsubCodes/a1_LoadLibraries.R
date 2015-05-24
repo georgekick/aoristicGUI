@@ -44,6 +44,7 @@ cat("#############################\n")
 	"sp",
 	"stringr",
   "dismo",
+  "gstat",
 	"plotKML",
   "xtable"
     ) 
@@ -88,9 +89,11 @@ suppressMessages(suppressWarnings(library(rjson, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(scales, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(sp, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(stringr, quietly=TRUE)))
-suppressMessages(suppressWarnings(library(plotKML, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(dismo, quietly=TRUE)))
+suppressMessages(suppressWarnings(library(gstat, quietly=TRUE)))
+suppressMessages(suppressWarnings(library(plotKML, quietly=TRUE)))
 suppressMessages(suppressWarnings(library(xtable, quietly=TRUE)))
+
 
 # source(file.path(folder.location, "RsubCodes/a2_SelectCSV.r")) 
 source_github("https://raw.githubusercontent.com/georgekick/aoristicGUI/master/RsubCodes/a2_SelectCSV.r") 
